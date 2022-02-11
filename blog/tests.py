@@ -1,3 +1,6 @@
-from django.test import TestCase
+import datetime
 
-# Create your tests here.
+from django.test import TestCase
+from .models import Post
+from django.utils import timezone
+

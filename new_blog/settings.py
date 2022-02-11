@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 
+import os
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -55,7 +57,9 @@ ROOT_URLCONF = 'new_blog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -76,12 +80,18 @@ WSGI_APPLICATION = 'new_blog.wsgi.application'
 
 DATABASES = {
     'default': {
+        'TEST': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': 'tesst.db',
+        },
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'blog_db',
         'USER': 'hasan',
         'PASSWORD': 'Mysite123',
         'HOST': 'localhost',
         'PORT': '',
+
+
     }
 }
 
