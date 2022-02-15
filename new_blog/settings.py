@@ -80,10 +80,6 @@ WSGI_APPLICATION = 'new_blog.wsgi.application'
 
 DATABASES = {
     'default': {
-        'TEST': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': 'tesst.db',
-        },
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'blog_db',
         'USER': 'hasan',
@@ -130,7 +126,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+   os.path.join(BASE_DIR, 'checkstatic/static/')
+]
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
