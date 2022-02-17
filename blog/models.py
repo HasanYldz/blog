@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from ckeditor.fields import RichTextField
 
 
 class Topic(models.Model):
@@ -17,10 +18,10 @@ STATUS = (
 
 class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
-    topic = models.ManyToManyField(Topic)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE, related_name="topic")
     title = models.CharField(max_length=127)
     slug = models.SlugField(max_length=127, unique=True)
-    content = models.TextField()
+    content = RichTextField()
     status = models.IntegerField(choices=STATUS, default=0)
     pub_date = models.DateTimeField("date published")
 

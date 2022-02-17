@@ -1,3 +1,330 @@
+﻿{% extends 'blog/base.html' %}
 {% load static %}
 
-{{post.content}}
+
+
+                {% block content %}                <!-- Content Start -->
+
+                    	<div class="row">
+
+
+                            <div class="sub-title">
+                           		<a href="{% url 'blog:index'%}"><h1>Aşşırı objektif</h1></a>
+                                <a href="#" class="btn-header-search"><i class="icon-magnifier"></i></a>
+                             </div>
+                            
+                            
+                            <div class="col-md-12 content-page">
+                              <div class="col-md-12 blog-post">
+                            	
+                                
+                                <!-- Post Headline Start -->
+                                <div class="post-title">
+                                    <h2>{{post.title}}</h2>
+                                   </div>
+                                   <!-- Post Headline End -->
+                                    
+                                    
+                                <!-- Post Detail Start -->
+                                <div class="post-info">
+                                    <span>{{post.pub_date}} / In <a href="category.html">{{post.topic}}</a></span>
+                                   </div>
+                                   <!-- Post Detail End -->
+                                    
+                                    
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin at quam at orci commodo hend vitae nec eros. Vestibulum neque est, imperdiet nec tortor nec, tempor semper metus. Cras vel tempus velit, et accumsan nisi. <b>Curabitur rhoncus auctor</b> nunc congue sodales. Sed posuere nisi ipsum, dignissim nunc dapibus eget. Aenean elementum sollicitudin sapien ut sapien sodales quam ut tempor tempor. Donec sollicitudin sapien ut sapien fermentum, non ultricies nulla gravida.</p>
+                                    
+                                
+                                <!-- Post Image Start -->
+                                <div class="post-image margin-top-40 margin-bottom-40">
+                                   <img src="images/blog/1.jpg" alt="">
+                                   <p>Image source from <a href="#" target="_blank">Link</a></p>                                      
+                                  </div>
+                                  <!-- Post Image End -->
+                                  
+                                  
+                                   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin at quam at orci commodo hendrerit vitae nec eros. Vestibulum neque est, imperdiet nec tortor nec, tempor semper metus. Cras vel tempus velit, et accumsan nisi. Duis laoreet pretium ultricies. Curabitur rhoncus auctor nunc congue sodale Sed posuere nisi ipsum.</p>
+                                 
+                                  
+                                  
+                                  <div class="post-title">
+                                    <h3>How to implement?</h3> 
+                                   </div>
+                                   
+                                   
+                                   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin at quam at orci commodo hendrerit vitae nec eros. Vestibulum neque est, imperdiet nec tortor nec, tempor semper metus. Cras vel tempus velit, et accumsan nisi. Duis laoreet pretium ultricies. Curabitur rhoncus auctor nunc congue sodale Sed posuere nisi ipsum.</p>
+                                   
+                                 
+                                  <div class="post-title">
+                                    <h3>Make it more awesome</h3> 
+                                   </div>
+                                   
+                                   
+                                   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin at quam at orci commodo hendrerit vitae nec eros. Vestibulum neque est.</p>
+                                 
+                                   
+                                  
+                                  <!-- Post Blockquote (Italic Style) Start -->
+                                  <blockquote class="margin-top-40 margin-bottom-40">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin at quam at orci commodo hendrerit vitae nec eros. Vestibulum neque est, imperdiet nec tortor nec, tempor semper metus. Cras vel tempus velit, <b>et accumsan nisi</b>. Duis laoreet pretium ultricies. Curabitur rhoncus auctor nunc congue sodale Sed posuere nisi ipsum.</p>
+                                   </blockquote>
+                                   <!-- Post Blockquote (Italic Style) End -->
+                                   
+                                   
+                                  
+                                  
+                                  <div class="post-title">
+                                    <h3>Learn to check all the features</h3> 
+                                   </div>
+                                   
+                                   
+                                   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin at quam at orci commodo hendrerit vitae nec eros. Vestibulum neque est.</p>
+                                 
+                                   
+                                  
+                                  <!-- Post List Style Start -->
+                                  <div class="list">
+                                   <ul>
+                                     <li>Ready to use Blog Template</li>
+                                     <li>It have all the necessary features which you need to run blog</li>
+                                     <li>Neat and Clean Typography</li>
+                                     <li>Speed Optimization</li>
+                                    </ul>
+                                   </div>
+                                   
+                                   
+                                  <div class="list list-style margin-top-40">
+                                   <ul>
+                                     <li>Ready to use Blog Template</li>
+                                     <li>It have all the necessary features which you need to run blog</li>
+                                     <li>Neat and Clean Typography</li>
+                                     <li>Speed Optimization</li>
+                                    </ul>
+                                   </div>
+                                   
+                                   
+                                  <div class="list list-style-2 margin-top-40">
+                                   <ul>
+                                     <li>Ready to use Blog Template</li>
+                                     <li>It have all the necessary features which you need to run blog</li>
+                                     <li>Neat and Clean Typography</li>
+                                     <li>Speed Optimization</li>
+                                    </ul>
+                                   </div>
+                                   <!-- Post List Style End -->
+
+                                  
+                                  
+                                  
+                                  <!-- Post Author Bio Box Start -->
+                                  <div class="about-author margin-top-70 margin-bottom-50">
+                                    
+                                    <div class="picture">
+                                      <img src="images/blog/author.png" class="img-responsive" alt="">
+                                     </div>
+                                   
+                                    <div class="c-padding">
+                                       <h4>Article By <a href="#" target="_blank">{{post.author}}</a></h4>
+                                       <p>You can use about author box when someone guest post on your blog, Lorem ipsum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna ad minim veniam.</p>
+									   <ul class="social-icon">
+                                         <li><a href="#" target="_blank" class="facebook"><i class="fa fa-facebook"></i></a></li>
+                                         <li><a href="#" target="_blank" class="twitter"><i class="fa fa-twitter"></i></a></li>
+                                         <li><a href="#" target="_blank" class="linkedin"><i class="fa fa-linkedin"></i></a></li>
+                                         <li><a href="#" target="_blank" class="github"><i class="fa fa-github"></i></a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                    <!-- Post Author Bio Box End -->
+                                    
+                                    
+                                    
+                                    
+                                  <!-- You May Also Like Start -->
+                                  <div class="you-may-also-like margin-top-50 margin-bottom-50">
+                                    <h3>You May Also Like</h3>
+                                     <div class="row">
+                                 
+                                    <div class="col-md-4 col-sm-6 col-xs-12">
+                                      <a href="{% url 'blog:post_detail' post.slug %}"><p>{{post.title}}</p></a>
+                                     </div>
+                    
+                                    <div class="col-md-4 col-sm-6 col-xs-12">
+                                      <a href="single.html"><p>How to design elegant e-mail newsletter in html for wish christmas to your subscribers?</p></a>
+                                     </div>
+                    
+                                    <div class="col-md-4 col-sm-6 col-xs-12">
+                                      <a href="single.html"><p>How to customize a wordpress theme entirely from scratch using a child theme?</p></a>
+                                     </div>
+
+                                    </div>
+                                  </div>
+                                  <!-- You May Also Like End -->
+                                    
+                                   
+                                  
+                                  
+                        <!-- Post Comment Start -->
+                        <div id="comment" class="comment">
+                          <h3>Comment Your Thoughts</h3>
+									
+                            <div class="post-comments">
+                                <!--
+                    	      <ul>
+                        	   
+							   <li>
+                            	<div class="thumb">
+                                	<img src="images/blog/comment.png" alt="">
+                                 </div>
+                                 
+								 <div class="text">
+                                	<div class="cover">
+                                    	<h4>Jhon Doe</h4>
+										<span>April 17, 2017</span>
+                                        <p>Cras eu molestie leo, non faucibus orci. Mauris aliquet leo dictum tincidunt laoreet. Nunc imperdiet accumsan efficitur.</p>
+                                        <a href="#" class="reply">Reply</a>
+                                    </div>
+                                </div>
+                            </li>
+                            
+                        	  <li>
+                            	<div class="thumb">
+                                	<img src="{% static 'images/blog/comment.png' %}" alt="">
+                                </div>
+                                <div class="text">
+                                	<div class="cover">
+                                    	<h4>Jhon Doe</h4>
+										<span>April 17, 2017</span>
+                                        <p>Cras eu molestie leo, non faucibus orci. Mauris aliquet leo dictum tincidunt laoreet. Nunc imperdiet accumsan efficitur.</p>
+                                        <a href="#" class="reply">Reply</a>
+                                    </div>
+                                </div>
+                                
+								    <ul>
+                                     <li>
+                                        <div class="thumb">
+                                            <img src="images/blog/comment.png" alt="">
+                                        </div>
+                                        <div class="text">
+                                            <div class="cover">
+                                                <h4>Jhon Doe</h4>
+												<span>April 17, 2017</span>
+                                                <p>Cras eu molestie leo, non faucibus orci. Mauris aliquet leo dictum tincidunt laoreet. Nunc imperdiet accumsan efficitur.</p>
+                                                <a href="#" class="reply">Reply</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    
+                                    <li>
+                                        <div class="thumb">
+                                            <img src="images/blog/comment.png" alt="">
+                                        </div>
+                                        <div class="text">
+                                            <div class="cover">
+                                                <h4>Jhon Doe</h4>
+												<span>April 17, 2017</span>
+                                                <p>Cras eu molestie leo, non faucibus orci. Mauris aliquet leo dictum tincidunt laoreet. Nunc imperdiet accumsan efficitur.</p>
+                                                <a href="#" class="reply">Reply</a>
+                                            </div>
+                                        </div>
+                                        <ul>
+                                           
+                                            <li>
+                                                <div class="thumb">
+                                                    <img src="images/blog/comment.png" alt="">
+                                                </div>
+                                                <div class="text">
+                                                    <div class="cover">
+                                                        <h4>Jhon Doe</h4>
+														<span>April 17, 2017</span>
+                                                        <p>Cras eu molestie leo, non faucibus orci. Mauris aliquet leo dictum tincidunt laoreet. Nunc imperdiet accumsan efficitur.</p>
+                                                        <a href="#" class="reply">Reply</a>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            
+                                            <li>
+                                                <div class="thumb">
+                                                    <img src="images/blog/comment.png" alt="">
+                                                </div>
+                                                <div class="text">
+                                                    <div class="cover">
+                                                        <h4>Jhon Doe</h4>
+														<span>April 17, 2017</span>
+                                                        <p>Cras eu molestie leo, non faucibus orci. Mauris aliquet leo dictum tincidunt laoreet. Nunc imperdiet accumsan efficitur.</p>
+                                                        <a href="#" class="reply">Reply</a>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        	<li>
+                            	<div class="thumb">
+                                	<img src="images/blog/comment.png" alt="">
+                                </div>
+                                <div class="text">
+                                	<div class="cover">
+                                    	<h4>Jhon Doe</h4>
+										<span>April 17, 2017</span>
+                                        <p>Cras eu molestie leo, non faucibus orci. Mauris aliquet leo dictum tincidunt laoreet. Nunc imperdiet accumsan efficitur.</p>
+                                        <a href="#" class="reply">Reply</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        -->
+                    </div>
+            
+                       
+					   <!-- Post Form Start -->
+                       <div class="col-md-12">
+			               <div class="row">
+                                <form>
+                                    <div class="col-sm-4">
+						              <div class="form-group">
+						               <input type="text" id="name" class="form-control" placeholder="Your Name">
+						              </div>
+                                     </div>
+								
+                                    <div class="col-sm-4">
+					                  <div class="form-group">
+						               <input type="email" id="email" class="form-control" placeholder="Your Email">
+						              </div>
+                                     </div>
+                        
+                                    <div class="col-sm-4">
+						              <div class="form-group">
+							           <input type="text" id="website" class="form-control" placeholder="Your Website">
+						              </div>
+                                     </div>
+								
+                                    <div class="col-sm-12">
+					                  <div class="textarea-message form-group">
+					                    <textarea id="message" class="textarea-message form-control" placeholder="Your Message" rows="5"></textarea>
+						            </div>
+                                   </div>
+                   
+                   
+                                <div class="text-center">      
+		                          <button type="submit" class="load-more-button">Send</button>
+	                             </div>
+                       
+                                 </form>
+								 </div>
+                             </div>BAKLAVALAR BENDEN!!!!!!!!!!!!!!!
+                             <!-- Post Form End-->
+              
+                           </div>
+                           <!-- Post Comment End -->
+                                  
+                                   
+
+                                </div>    
+                             </div>
+                              
+                         </div>
+                         
+                        
+
+                  {% endblock %}
