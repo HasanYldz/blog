@@ -1,7 +1,7 @@
 ﻿{% extends 'blog/base.html' %}
 {% load static %}
 
-
+                {% block title %}{{post.title}}{% endblock %}
 
                 {% block content %}                <!-- Content Start -->
 
@@ -9,11 +9,11 @@
 
 
                             <div class="sub-title">
-                           		<a href="{% url 'blog:index'%}"><h1>Aşşırı objektif</h1></a>
+                           		<a href="{% url 'blog:index'%}"><h1>Aşşırı Objektif</h1></a>
                                 <a href="#" class="btn-header-search"><i class="icon-magnifier"></i></a>
                              </div>
-                            
-                            
+
+
                             <div class="col-md-12 content-page">
                               <div class="col-md-12 blog-post">
                             	
@@ -27,91 +27,11 @@
                                     
                                 <!-- Post Detail Start -->
                                 <div class="post-info">
-                                    <span>{{post.pub_date}} / In <a href="category.html">{{post.topic}}</a></span>
+                                    <span>{{post.pub_date}} / In <a href="{% url 'blog:topic_detail' post.topic.slug %}">{{post.topic}}</a></span>
                                    </div>
                                    <!-- Post Detail End -->
                                     
-                                    
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin at quam at orci commodo hend vitae nec eros. Vestibulum neque est, imperdiet nec tortor nec, tempor semper metus. Cras vel tempus velit, et accumsan nisi. <b>Curabitur rhoncus auctor</b> nunc congue sodales. Sed posuere nisi ipsum, dignissim nunc dapibus eget. Aenean elementum sollicitudin sapien ut sapien sodales quam ut tempor tempor. Donec sollicitudin sapien ut sapien fermentum, non ultricies nulla gravida.</p>
-                                    
-                                
-                                <!-- Post Image Start -->
-                                <div class="post-image margin-top-40 margin-bottom-40">
-                                   <img src="images/blog/1.jpg" alt="">
-                                   <p>Image source from <a href="#" target="_blank">Link</a></p>                                      
-                                  </div>
-                                  <!-- Post Image End -->
-                                  
-                                  
-                                   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin at quam at orci commodo hendrerit vitae nec eros. Vestibulum neque est, imperdiet nec tortor nec, tempor semper metus. Cras vel tempus velit, et accumsan nisi. Duis laoreet pretium ultricies. Curabitur rhoncus auctor nunc congue sodale Sed posuere nisi ipsum.</p>
-                                 
-                                  
-                                  
-                                  <div class="post-title">
-                                    <h3>How to implement?</h3> 
-                                   </div>
-                                   
-                                   
-                                   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin at quam at orci commodo hendrerit vitae nec eros. Vestibulum neque est, imperdiet nec tortor nec, tempor semper metus. Cras vel tempus velit, et accumsan nisi. Duis laoreet pretium ultricies. Curabitur rhoncus auctor nunc congue sodale Sed posuere nisi ipsum.</p>
-                                   
-                                 
-                                  <div class="post-title">
-                                    <h3>Make it more awesome</h3> 
-                                   </div>
-                                   
-                                   
-                                   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin at quam at orci commodo hendrerit vitae nec eros. Vestibulum neque est.</p>
-                                 
-                                   
-                                  
-                                  <!-- Post Blockquote (Italic Style) Start -->
-                                  <blockquote class="margin-top-40 margin-bottom-40">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin at quam at orci commodo hendrerit vitae nec eros. Vestibulum neque est, imperdiet nec tortor nec, tempor semper metus. Cras vel tempus velit, <b>et accumsan nisi</b>. Duis laoreet pretium ultricies. Curabitur rhoncus auctor nunc congue sodale Sed posuere nisi ipsum.</p>
-                                   </blockquote>
-                                   <!-- Post Blockquote (Italic Style) End -->
-                                   
-                                   
-                                  
-                                  
-                                  <div class="post-title">
-                                    <h3>Learn to check all the features</h3> 
-                                   </div>
-                                   
-                                   
-                                   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin at quam at orci commodo hendrerit vitae nec eros. Vestibulum neque est.</p>
-                                 
-                                   
-                                  
-                                  <!-- Post List Style Start -->
-                                  <div class="list">
-                                   <ul>
-                                     <li>Ready to use Blog Template</li>
-                                     <li>It have all the necessary features which you need to run blog</li>
-                                     <li>Neat and Clean Typography</li>
-                                     <li>Speed Optimization</li>
-                                    </ul>
-                                   </div>
-                                   
-                                   
-                                  <div class="list list-style margin-top-40">
-                                   <ul>
-                                     <li>Ready to use Blog Template</li>
-                                     <li>It have all the necessary features which you need to run blog</li>
-                                     <li>Neat and Clean Typography</li>
-                                     <li>Speed Optimization</li>
-                                    </ul>
-                                   </div>
-                                   
-                                   
-                                  <div class="list list-style-2 margin-top-40">
-                                   <ul>
-                                     <li>Ready to use Blog Template</li>
-                                     <li>It have all the necessary features which you need to run blog</li>
-                                     <li>Neat and Clean Typography</li>
-                                     <li>Speed Optimization</li>
-                                    </ul>
-                                   </div>
-                                   <!-- Post List Style End -->
+                                  {{post.content | safe}}
 
                                   
                                   
@@ -124,14 +44,16 @@
                                      </div>
                                    
                                     <div class="c-padding">
-                                       <h4>Article By <a href="#" target="_blank">{{post.author}}</a></h4>
-                                       <p>You can use about author box when someone guest post on your blog, Lorem ipsum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna ad minim veniam.</p>
-									   <ul class="social-icon">
+                                       <h4>Article By <a href="#" target="_blank">{{post.author.get_full_name}}</a></h4>
+                                        <p>You can use about author box when someone guest post on your blog, Lorem ipsum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna ad minim veniam.</p>
+									   <!--
+                                        <ul class="social-icon">
                                          <li><a href="#" target="_blank" class="facebook"><i class="fa fa-facebook"></i></a></li>
                                          <li><a href="#" target="_blank" class="twitter"><i class="fa fa-twitter"></i></a></li>
                                          <li><a href="#" target="_blank" class="linkedin"><i class="fa fa-linkedin"></i></a></li>
                                          <li><a href="#" target="_blank" class="github"><i class="fa fa-github"></i></a></li>
                                         </ul>
+                                        -->
                                       </div>
                                     </div>
                                     <!-- Post Author Bio Box End -->
@@ -281,24 +203,19 @@
                        <div class="col-md-12">
 			               <div class="row">
                                 <form>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
 						              <div class="form-group">
 						               <input type="text" id="name" class="form-control" placeholder="Your Name">
 						              </div>
                                      </div>
 								
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
 					                  <div class="form-group">
 						               <input type="email" id="email" class="form-control" placeholder="Your Email">
 						              </div>
                                      </div>
                         
-                                    <div class="col-sm-4">
-						              <div class="form-group">
-							           <input type="text" id="website" class="form-control" placeholder="Your Website">
-						              </div>
-                                     </div>
-								
+
                                     <div class="col-sm-12">
 					                  <div class="textarea-message form-group">
 					                    <textarea id="message" class="textarea-message form-control" placeholder="Your Message" rows="5"></textarea>

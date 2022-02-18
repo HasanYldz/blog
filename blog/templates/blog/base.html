@@ -111,6 +111,12 @@
                                <li><a href="{% url 'blog:index'%}">Home</a></li>
                                <li><a href="{% url 'blog:index'%}">About</a></li>
                                <li><a href="{% url 'blog:index'%}">Contact</a></li>
+                              {% if user.is_authenticated %}
+                               <li><a href="{% url 'blog:add_post'%}">New Post</a></li>
+                               <li><a href="{% url 'blog:add_topic'%}">New Topic</a></li>
+                              {% endif %}
+
+
                             </ul>
 
                           <p>© Copyright 2017 Write. All rights reserved</p>

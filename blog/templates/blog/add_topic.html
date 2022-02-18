@@ -20,7 +20,7 @@
         <form method="post">
             {% csrf_token %}
             <div class="form-group">
-              <label for="id_message">New Post</label>
+              <label for="id_message">New Topic</label>
                 {{ form.media }}
                 {{ form.as_p }}
             </div>
@@ -31,4 +31,3 @@
     </div>
 
     {% endblock %}
-
