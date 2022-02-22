@@ -5,7 +5,7 @@ from .models import Post, Topic
 class NewPostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'content', 'status', 'author', 'topic']
+        fields = ['title', 'content', 'status', 'topic']
 
 
 class NewTopicForm(forms.ModelForm):
@@ -13,6 +13,13 @@ class NewTopicForm(forms.ModelForm):
         model = Topic
         fields = ['name']
 
-    class LoginForm(forms.Form):
-        email = forms.CharField(max_length=64)
-        password = forms.CharField(widget=forms.PasswordInput(render_value=False), max_length=30)
+
+class LoginForm(forms.Form):
+    email = forms.CharField(max_length=64)
+    password = forms.CharField(widget=forms.PasswordInput(render_value=False), max_length=30)
+
+
+class EditPostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'content', 'status', 'author', 'topic', 'active']

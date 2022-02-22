@@ -42,12 +42,23 @@
 
       {% block javascript %}{% endblock %}
 
+    <style>
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #333;
+      position: fixed;
+      top: 0;
+      width: 100%;
+    }
+    </style>
 
   </head>
 
  <body>
 
-	
      
 	 <!-- Preloader Start -->
      <div class="preloader">
@@ -62,8 +73,8 @@
                 <div class="row">
                     <div class="col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
                         <div class="navbar-search">
-                            <form class="search-global">
-                                <input type="text" placeholder="Type then enter" autocomplete="off" name="search-query" value="" class="search-global-input" />
+                            <form class="search-global" action="{% url 'blog:index' %}">
+                                <input type="text" placeholder="Type then enter" autocomplete="off" name="search" value="" class="search-global-input" />
                                 <button class="search-global-btn"><i class="icon-magnifier"></i></button>
                                 <div class="search-global-note">Type your search query above and then press to enter or click on icon</div>
                             </form>
@@ -71,7 +82,7 @@
                     </div>
                 </div>
             </div>
-            <button type="button" class="search-close close"><i class="fa fa-times"></i></button>
+            <button type="search" class="search-close close"><i class="fa fa-times"></i></button>
         </div>
         <!-- Popup Search Box End -->
       
@@ -79,7 +90,33 @@
     
     
     <div id="main">
+
+            <ul class="menu-link">
+               <li><a href="{% url 'blog:index'%}">Home</a></li>
+               <li><a href="{% url 'blog:index'%}">About</a></li>
+               <li><a href="{% url 'blog:index'%}">Contact</a></li>
+              {% if user.is_authenticated %}
+               <li><a href="{% url 'blog:add_post'%}">New Post</a></li>
+               <li><a href="{% url 'blog:add_topic'%}">New Topic</a></li>
+               <li><a href="{% url 'blog:author_detail' user.id %}">User: {{ user.get_username }}</a></li>
+               <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+              {% else %}
+               <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
+                {% endif %}
+                <div class="dropdown">
+
+                 <form  action="{% url 'blog:index' %}">
+                <select name="sort" onchange="this.form.submit()">
+                    <option value=”n”>Date published (newest)</option>
+                    <option value=”o”>Date published (oldest)</option>
+                    <option value=”k”>option3</option>
+                </select>
+                 </form>
+            </ul>
+    </div>
         <div class="container">
+
+
 
             {% block content %}
 
@@ -105,19 +142,9 @@
 
 
                        <!-- Footer Start -->
-                       <div class="col-md-12 page-body margin-top-50 footer">
+                       <div class="col-md-12 page-body margin-top-0 footer">
                           <footer>
-                          <ul class="menu-link">
-                               <li><a href="{% url 'blog:index'%}">Home</a></li>
-                               <li><a href="{% url 'blog:index'%}">About</a></li>
-                               <li><a href="{% url 'blog:index'%}">Contact</a></li>
-                              {% if user.is_authenticated %}
-                               <li><a href="{% url 'blog:add_post'%}">New Post</a></li>
-                               <li><a href="{% url 'blog:add_topic'%}">New Topic</a></li>
-                              {% endif %}
 
-
-                            </ul>
 
                           <p>© Copyright 2017 Write. All rights reserved</p>
 

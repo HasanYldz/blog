@@ -27,7 +27,12 @@
                                     
                                 <!-- Post Detail Start -->
                                 <div class="post-info">
-                                    <span>{{post.pub_date}} / In <a href="{% url 'blog:topic_detail' post.topic.slug %}">{{post.topic}}</a></span>
+                                    <span>{{post.pub_date}} / In <a href="{% url 'blog:topic_detail' post.topic.slug %}">{{post.topic}}</a>
+                                    {% if user == post.author %}
+                                        / <a href="{% url 'blog:edit_post' post.slug %}">Edit Post</a>
+                                    {% endif %}
+                                    </span>
+
                                    </div>
                                    <!-- Post Detail End -->
                                     
@@ -44,7 +49,7 @@
                                      </div>
                                    
                                     <div class="c-padding">
-                                       <h4>Article By <a href="#" target="_blank">{{post.author.get_full_name}}</a></h4>
+                                       <h4>Article By <a href="{% url 'blog:author_detail' post.author.id %}" >{{post.author.get_full_name}}</a></h4>
                                         <p>You can use about author box when someone guest post on your blog, Lorem ipsum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna ad minim veniam.</p>
 									   <!--
                                         <ul class="social-icon">

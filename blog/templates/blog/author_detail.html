@@ -41,6 +41,9 @@
                     <div class="post-info">
                         <span>{{post.pub_date | date}} / In <a href="{% url 'blog:topic_detail' post.topic.slug %}">{{post.topic.name}}</a>
                             / Author <a href="{% url 'blog:author_detail' author.id %}">{{author.get_full_name}}</a>
+                            {% if user == author %}
+                                / <a href="{% url 'blog:edit_post' post.slug %}">Edit Post</a>
+                            {% endif %}
                         </span>
                     </div>
                     <p>{{post.content | safe | truncatewords_html:64}}</p>

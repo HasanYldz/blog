@@ -26,10 +26,9 @@ class Post(models.Model):
     slug = models.SlugField(max_length=127, unique=True)
     content = RichTextField()
     status = models.IntegerField(choices=STATUS, default=0)
-    pub_date = models.DateTimeField("date published")
+    pub_date = models.DateTimeField("date published", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=True)
-
 
     def __str__(self):
         return self.title
