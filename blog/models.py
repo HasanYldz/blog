@@ -29,6 +29,13 @@ class Post(models.Model):
     pub_date = models.DateTimeField("date published", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=True)
+    related_posts = models.ManyToManyField('self', blank=True)
 
     def __str__(self):
         return self.title
+
+
+class Subscriber(models.Model):
+    email = models.EmailField(max_length=254)
+    subscription_date = models.DateTimeField(auto_now_add=True)
+    active = models.BooleanField(default=True)

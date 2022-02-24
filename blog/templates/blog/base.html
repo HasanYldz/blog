@@ -107,9 +107,12 @@
 
                  <form  action="{% url 'blog:index' %}">
                 <select name="sort" onchange="this.form.submit()">
-                    <option value=”n”>Date published (newest)</option>
-                    <option value=”o”>Date published (oldest)</option>
-                    <option value=”k”>option3</option>
+                    <option disabled="disabled" selected="selected">Sorting method</option>
+                    <option value=newest>Date published (newest)</option>
+                    <option value=oldest>Date published (oldest)</option>
+                    <option value=author>Author name (a to z)</option>
+                    <option value=topic>Topic name (a to z)</option>
+
                 </select>
                  </form>
             </ul>

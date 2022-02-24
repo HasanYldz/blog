@@ -20,7 +20,21 @@ class index(View):
                                         | Q(topic__name__icontains=search_post)
                                         | Q(content__icontains=search_post))
         else:
-            posts = Post.objects.filter(status=1, active=True).order_by('-pub_date')
+            sort_method = request.GET.get('sort')
+
+            if sort_method == 'newest':
+                posts = Post.objects.filter(status=1, active=True).order_by('-pub_date')
+            elif sort_method == 'oldest':
+                posts = Post.objects.filter(status=1, active=True).order_by('pub_date')
+            elif sort_method == 'author':
+                posts = Post.objects.filter(status=1, active=True).order_by('author')
+            elif sort_method == 'topic':
+                posts = Post.objects.filter(status=1, active=True).order_by('topic')
+            else:
+                posts = Post.objects.filter(status=1, active=True).order_by('-pub_date')
+
+
+
         return render(request, 'blog/index.html', {'posts': posts})
 
 
@@ -34,7 +48,7 @@ class topic_detail(View):
     def get(self, request, slug):
         topic = get_object_or_404(Topic, slug=slug)
         posts = Post.objects.filter(status=1, topic=topic, active=True).order_by('-pub_date')
-        return render(request, 'blog/topic_detail.html', {'posts': posts, 'topic':topic})
+        return render(request, 'blog/topic_detail.html', {'posts': posts, 'topic': topic})
 
 
 class author_detail(View):
@@ -45,7 +59,6 @@ class author_detail(View):
         else:
             posts = Post.objects.filter(author=author).order_by('-pub_date')
         return render(request, 'blog/author_detail.html', {'posts': posts, 'author':author})
-
 
 
 class add_post(LoginRequiredMixin, View):
@@ -63,10 +76,30 @@ class add_post(LoginRequiredMixin, View):
 
             post.slug = slugify(post.title)
             post.author = request.user
+
             post.save()
 
-            return redirect('blog:post_detail', post.slug)
+            for selected_post in form.cleaned_data['related_posts']:
+                post.related_posts.add(selected_post)
 
+            if post.related_posts.count() < 3:
+                rel_posts = Post.objects.filter(status=1, active=True, topic=post.topic).order_by('-pub_date')
+                posts_needed = 3 - post.related_posts.count()
+
+                if posts_needed + 1 > rel_posts.count():
+                    posts_needed = rel_posts.count() - 1
+
+                for i in range(1, posts_needed + 1):
+                    post.related_posts.add(rel_posts[i])
+
+            post.save()
+
+            if post.status == 1:
+                return redirect('blog:post_detail', post.slug)
+            else:
+                return redirect('blog:index')
+        else:
+            return redirect('blog:index')
 
 
 class add_topic(LoginRequiredMixin, View):
@@ -97,14 +130,30 @@ class edit_post(LoginRequiredMixin, View):
         form = EditPostForm(request.POST, instance=post)
 
         if form.is_valid():
-
             if old_status == 0:
                 if post.status == 1:
                     post.pub_date = timezone.now()
 
             post.save()
 
-            if post.active:
-                return redirect('blog:post_detail', post.slug)
+            for selected_post in form.cleaned_data['related_posts']:
+                post.related_posts.add(selected_post)
 
-            return redirect('blog:index')
+            if post.related_posts.count() < 3:
+                rel_posts = Post.objects.filter(status=1, active=True, topic=post.topic).order_by('-pub_date')
+                posts_needed = 3 - post.related_posts.count()
+
+                if posts_needed + 1 > rel_posts.count():
+                    posts_needed = rel_posts.count() - 1
+
+                for i in range(1, posts_needed + 1):
+                    post.related_posts.add(rel_posts[i])
+
+            post.save()
+
+            if post.active and post.status == 1:
+                return redirect('blog:post_detail', post.slug)
+            else:
+                return redirect('blog:index')
+
+        return redirect('blog:index')

@@ -70,18 +70,16 @@
                                   <div class="you-may-also-like margin-top-50 margin-bottom-50">
                                     <h3>You May Also Like</h3>
                                      <div class="row">
-                                 
+
+                                 {% if post.related_posts %}
+                                    {% for related_post in post.related_posts.all %}
+
                                     <div class="col-md-4 col-sm-6 col-xs-12">
-                                      <a href="{% url 'blog:post_detail' post.slug %}"><p>{{post.title}}</p></a>
+                                      <a href="{% url 'blog:post_detail' related_post.slug %}"><p>{{related_post.title}}</p></a>
                                      </div>
-                    
-                                    <div class="col-md-4 col-sm-6 col-xs-12">
-                                      <a href="single.html"><p>How to design elegant e-mail newsletter in html for wish christmas to your subscribers?</p></a>
-                                     </div>
-                    
-                                    <div class="col-md-4 col-sm-6 col-xs-12">
-                                      <a href="single.html"><p>How to customize a wordpress theme entirely from scratch using a child theme?</p></a>
-                                     </div>
+
+                                    {% endfor %}
+                                {% endif %}
 
                                     </div>
                                   </div>
