@@ -2,7 +2,7 @@
 {% load static %}
 
 {% if posts %}
-    {% block title %}{{topic.name}}{% endblock %}
+{% block title %}{{topic.name}}{% endblock %}
 {% endif %}
 
 {% block content %}
@@ -13,52 +13,51 @@
     <div class="sub-title">
         <a href="{% url 'blog:index'%}"><h1>Aşşırı Objektif</h1></a>
         <a href="#" class="btn-header-search"><i class="icon-magnifier"></i></a>
-     </div>
+    </div>
 
 
     <div class="col-md-12 content-page">
 
-       <!-- Category Text Start -->
-       <div class="col-md-12 category-and-search-title">
-        <span>Category <b class="main-color">{{topic.name}}</b></span>
-         </div>
-         <!-- Category Text End -->
-
+        <!-- Category Text Start -->
+        <div class="col-md-12 category-and-search-title">
+            <span>Category <b class="main-color">{{topic.name}}</b></span>
+        </div>
+        <!-- Category Text End -->
 
 
         {% if posts %}
-            {% for post in posts %}
-                <!-- Blog Post Start -->
-                <div class="col-md-12 blog-post">
-                    <!--
-                    <div class="post-image">
-                        <img src="{% static 'images/blog/1.jpg' %}" alt="">
-                    </div>
-                    -->
-                    <div class="post-title">
-                      <a href="{% url 'blog:post_detail' post.slug %}"><h2>{{post.title}}</h2></a>
-                    </div>
-                    <div class="post-info">
+        {% for post in posts %}
+        <!-- Blog Post Start -->
+        <div class="col-md-12 blog-post">
+            <!--
+            <div class="post-image">
+                <img src="{% static 'images/blog/1.jpg' %}" alt="">
+            </div>
+            -->
+            <div class="post-title">
+                <a href="{% url 'blog:post_detail' post.slug %}"><h2>{{post.title}}</h2></a>
+            </div>
+            <div class="post-info">
                         <span>{{post.pub_date | date}} / In <a href="{% url 'blog:topic_detail' post.topic.slug %}">{{post.topic.name}}</a>
                             / Author <a href="{% url 'blog:author_detail' post.author.id %}">{{post.author.get_full_name}}</a>
                         </span>
-                    </div>
-                    <p>{{post.content | safe | truncatewords_html:64}}</p>
-                    <a href="{% url 'blog:post_detail' post.slug %}" class="button button-style button-anim fa fa-long-arrow-right"><span>Read More</span></a>
-                </div>
-                <!-- Blog Post End -->
-            {% endfor %}
+            </div>
+            <p>{{post.content | safe | truncatewords_html:64}}</p>
+            <a href="{% url 'blog:post_detail' post.slug %}"
+               class="button button-style button-anim fa fa-long-arrow-right"><span>Read More</span></a>
+        </div>
+        <!-- Blog Post End -->
+        {% endfor %}
         {% endif %}
 
 
-
         <div class="col-md-12 text-center">
-         <a href="javascript:void(0)" id="load-more-post" class="load-more-button">Load</a>
-         <div id="post-end-message"></div>
+            <a href="javascript:void(0)" id="load-more-post" class="load-more-button">Load</a>
+            <div id="post-end-message"></div>
         </div>
 
-     </div>
+    </div>
 
- </div>
+</div>
 
 {% endblock %}

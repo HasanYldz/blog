@@ -6,7 +6,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -29,7 +28,8 @@ class Migration(migrations.Migration):
                 ('content', models.TextField()),
                 ('status', models.IntegerField(choices=[(0, 'Draft'), (1, 'Publish')], default=0)),
                 ('pub_date', models.DateTimeField(verbose_name='date published')),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='posts', to=settings.AUTH_USER_MODEL)),
+                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='posts',
+                                             to=settings.AUTH_USER_MODEL)),
                 ('topic', models.ManyToManyField(to='blog.Topic')),
             ],
         ),

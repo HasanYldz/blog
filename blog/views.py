@@ -4,10 +4,10 @@ from django.utils import timezone
 from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-
+from django.core.exceptions import ObjectDoesNotExist
 
 from .forms import NewPostForm, NewTopicForm, EditPostForm
-from .models import Post, Topic, User
+from .models import Post, Topic, User, Subscriber
 
 
 class index(View):
@@ -33,8 +33,6 @@ class index(View):
             else:
                 posts = Post.objects.filter(status=1, active=True).order_by('-pub_date')
 
-
-
         return render(request, 'blog/index.html', {'posts': posts})
 
 
@@ -58,7 +56,7 @@ class author_detail(View):
             posts = Post.objects.filter(status=1, author=author, active=True).order_by('-pub_date')
         else:
             posts = Post.objects.filter(author=author).order_by('-pub_date')
-        return render(request, 'blog/author_detail.html', {'posts': posts, 'author':author})
+        return render(request, 'blog/author_detail.html', {'posts': posts, 'author': author})
 
 
 class add_post(LoginRequiredMixin, View):
@@ -83,14 +81,23 @@ class add_post(LoginRequiredMixin, View):
                 post.related_posts.add(selected_post)
 
             if post.related_posts.count() < 3:
-                rel_posts = Post.objects.filter(status=1, active=True, topic=post.topic).order_by('-pub_date')
-                posts_needed = 3 - post.related_posts.count()
+                rel_posts = Post.objects.filter(status=1, active=True, topic=post.topic).exclude(id=post.id).order_by('-pub_date')
 
-                if posts_needed + 1 > rel_posts.count():
-                    posts_needed = rel_posts.count() - 1
+                for e in rel_posts:
+                    if not post.related_posts.contains(e):
+                        post.related_posts.add(e)
+                        if post.related_posts.count() > 2:
+                            break
 
-                for i in range(1, posts_needed + 1):
-                    post.related_posts.add(rel_posts[i])
+            if post.related_posts.count() < 3:
+                rel_posts = Post.objects.filter(status=1, active=True).exclude(id=post.id, topic=post.topic).order_by('-pub_date')
+
+                for e in rel_posts:
+                    if not post.related_posts.contains(e):
+                        post.related_posts.add(e)
+                        if post.related_posts.count() > 2:
+                            break
+
 
             post.save()
 
@@ -156,4 +163,15 @@ class edit_post(LoginRequiredMixin, View):
             else:
                 return redirect('blog:index')
 
+        return redirect('blog:index')
+
+
+class newsletter_subscription(View):
+    def post(self, request):
+        new_subscriber = Subscriber()
+        new_subscriber.email = request.POST['mail']
+        try:
+            Subscriber.objects.get(email=new_subscriber.email)
+        except ObjectDoesNotExist:
+            new_subscriber.save()
         return redirect('blog:index')

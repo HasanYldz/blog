@@ -5,7 +5,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('blog', '0010_remove_post_topic_post_topic'),
     ]

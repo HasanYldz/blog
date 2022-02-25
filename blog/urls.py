@@ -11,4 +11,5 @@ urlpatterns = [
     path('new-post/', views.add_post.as_view(), name='add_post'),
     path('new-topic/', views.add_topic.as_view(), name='add_topic'),
     path('edit-post/<slug:slug>/', views.edit_post.as_view(), name='edit_post'),
+    path('newsletter-subscription/', views.newsletter_subscription.as_view(), name='newsletter_subscription'),
 ]

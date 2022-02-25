@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('blog', '0009_alter_post_slug'),
     ]
@@ -18,6 +17,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='post',
             name='topic',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, related_name='topic', to='blog.topic'),
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, related_name='topic',
+                                    to='blog.topic'),
         ),
     ]

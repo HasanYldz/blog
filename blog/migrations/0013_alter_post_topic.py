@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('blog', '0012_topic_slug_alter_post_topic'),
     ]
