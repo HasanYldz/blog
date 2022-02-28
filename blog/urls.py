@@ -1,5 +1,8 @@
 from django.urls import path
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 from . import views
 
 app_name = 'blog'
@@ -13,3 +16,6 @@ urlpatterns = [
     path('edit-post/<slug:slug>/', views.edit_post.as_view(), name='edit_post'),
     path('newsletter-subscription/', views.newsletter_subscription.as_view(), name='newsletter_subscription'),
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

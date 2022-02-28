@@ -8,7 +8,7 @@ from .models import Post, Topic
 class NewPostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'content', 'status', 'topic', 'related_posts']
+        fields = ['title', 'content', 'status', 'topic', 'related_posts', 'post_picture']
 
     def clean(self):
         related_posts = self.cleaned_data.get('related_posts')

@@ -65,7 +65,7 @@ class add_post(LoginRequiredMixin, View):
         return render(request, 'blog/add_post.html', {'form': form})
 
     def post(self, request):
-        form = NewPostForm(request.POST)
+        form = NewPostForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
 
@@ -81,7 +81,8 @@ class add_post(LoginRequiredMixin, View):
                 post.related_posts.add(selected_post)
 
             if post.related_posts.count() < 3:
-                rel_posts = Post.objects.filter(status=1, active=True, topic=post.topic).exclude(id=post.id).order_by('-pub_date')
+                rel_posts = Post.objects.filter(status=1, active=True, topic=post.topic).exclude(id=post.id).order_by(
+                    '-pub_date')
 
                 for e in rel_posts:
                     if not post.related_posts.contains(e):
@@ -90,14 +91,14 @@ class add_post(LoginRequiredMixin, View):
                             break
 
             if post.related_posts.count() < 3:
-                rel_posts = Post.objects.filter(status=1, active=True).exclude(id=post.id, topic=post.topic).order_by('-pub_date')
+                rel_posts = Post.objects.filter(status=1, active=True).exclude(id=post.id, topic=post.topic).order_by(
+                    '-pub_date')
 
                 for e in rel_posts:
                     if not post.related_posts.contains(e):
                         post.related_posts.add(e)
                         if post.related_posts.count() > 2:
                             break
-
 
             post.save()
 

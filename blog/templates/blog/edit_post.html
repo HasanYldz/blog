@@ -1,6 +1,9 @@
 {% extends 'blog/base.html' %}
 {% load static %}
 
+{% block title %}Edit Post{% endblock %}
+
+
 {% block javascript %}
 <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
 <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>

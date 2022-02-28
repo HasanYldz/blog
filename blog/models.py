@@ -19,6 +19,10 @@ STATUS = (
 )
 
 
+def post_directory_path(instance, filename):
+    return 'post_pictures/{0}/{1}'.format(instance.title, filename)
+
+
 class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE, related_name="posts")
@@ -30,6 +34,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=True)
     related_posts = models.ManyToManyField('self', blank=True)
+    post_picture = models.ImageField(upload_to=post_directory_path, blank=True, null=True)
 
     def __str__(self):
         return self.title

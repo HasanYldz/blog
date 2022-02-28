@@ -1,6 +1,8 @@
 {% extends 'blog/base.html' %}
 {% load static %}
 
+{% block title %}Add Post{% endblock %}
+
 {% block javascript %}
 <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
 <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
@@ -17,10 +19,10 @@
 
     <div class="col-md-12 content-page">
 
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
-                <label for="id_message">New Post</label>
+                <label>New Post</label>
                 {{ form.media }}
                 {{ form.as_p }}
             </div>
