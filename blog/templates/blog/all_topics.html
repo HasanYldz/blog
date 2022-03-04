@@ -1,0 +1,35 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+
+<div class="row">
+
+
+    <div class="sub-title">
+        <a href="{% url 'blog:index'%}"><h1>Aşşırı Objektif</h1></a>
+        <a href="#" class="btn-header-search"><i class="icon-magnifier"></i></a>
+    </div>
+
+
+    <div class="col-md-12 content-page">
+
+        <div class="col-md-12 category-and-search-title">
+            <span>All Topics <b class="main-color"></b></span>
+        </div>
+
+        {% if topics %}
+            {% for topic in topics %}
+                <div class="col-md-12 category-and-search-title">
+                    <span><b class="main-color"><a href="{% url 'blog:topic_detail' topic.slug %}">{{topic}}</a></b></span>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

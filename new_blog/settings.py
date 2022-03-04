@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'blog',
     'ckeditor',
     'ckeditor_uploader',
-
+    'hitcount',
+    'secretballot',
 ]
 
 MIDDLEWARE = [
@@ -53,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'secretballot.middleware.SecretBallotIpUseragentMiddleware'
 ]
 
 ROOT_URLCONF = 'new_blog.urls'
@@ -165,7 +167,14 @@ CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'full',
         'height': 500,
-        'width': 1200,
+        'width': 1150,
     },
 }
 ###################################
+
+# In order to attach the voting helpers to a particular model it is enough
+# to list them here...
+SECRETBALLOT_FOR_MODELS = {
+    "blog.Post": {
+    },
+}

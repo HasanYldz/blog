@@ -1,5 +1,6 @@
 ﻿{% extends 'blog/base.html' %}
 {% load static %}
+{% load hitcount_tags %}
 
 {% block title %}Post - {{post.title}}{% endblock %}
 
@@ -17,6 +18,11 @@
     <div class="col-md-12 content-page">
         <div class="col-md-12 blog-post">
 
+            {% if post.post_picture %}
+
+                <img src="{{ post.post_picture.url}}" alt=""height="350">
+
+            {% endif %}
 
             <!-- Post Headline Start -->
             <div class="post-title">
@@ -27,31 +33,36 @@
 
             <!-- Post Detail Start -->
             <div class="post-info">
-                                    <span>{{post.pub_date}} / In <a
-                                            href="{% url 'blog:topic_detail' post.topic.slug %}">{{post.topic}}</a>
-                                    {% if user == post.author %}
-                                        / <a href="{% url 'blog:edit_post' post.slug %}">Edit Post</a>
-                                    {% endif %}
-                                    </span>
+                <span>{{post.pub_date}} / In <a href="{% url 'blog:topic_detail' post.topic.slug %}">{{post.topic}}</a>
+                    / Views: {% get_hit_count for post %}
+                    / Likes: <var id="likes">{{post.vote_total}}</var>
+
+                    {% if user == post.author %}
+                        / <a href="{% url 'blog:edit_post' post.slug %}">Edit Post</a>
+                    {% endif %}
+
+
+                </span>
 
             </div>
-            <!-- Post Detail End -->
 
             {{post.content | safe}}
+<i class="fa fa-thumbs-up" id = "thumbs-up"></i>
+<i class="fa fa-thumbs-down" id = "thumbs-down"></i>
 
+            <!-- Post Detail End -->
 
             <!-- Post Author Bio Box Start -->
             <div class="about-author margin-top-70 margin-bottom-50">
 
                 <div class="picture">
-                    <img src="images/blog/author.png" class="img-responsive" alt="">
+                    <img src="{% static 'images/blog/author.png' %}" class="img-responsive" alt="">
                 </div>
 
                 <div class="c-padding">
                     <h4>Article By <a
                             href="{% url 'blog:author_detail' post.author.id %}">{{post.author.get_full_name}}</a></h4>
-                    <p>You can use about author box when someone guest post on your blog, Lorem ipsum consectetur
-                        adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna ad minim veniam.</p>
+                    <p>You can use about author box when someone guest post on your blog.</p>
                     <!--
                      <ul class="social-icon">
                       <li><a href="#" target="_blank" class="facebook"><i class="fa fa-facebook"></i></a></li>
@@ -71,171 +82,18 @@
                 <div class="row">
 
                     {% if post.related_posts %}
-                    {% for related_post in post.related_posts.all %}
+                        {% for related_post in post.related_posts.all %}
 
-                    <div class="col-md-4 col-sm-6 col-xs-12">
-                        <a href="{% url 'blog:post_detail' related_post.slug %}"><p>{{related_post.title}}</p></a>
-                    </div>
+                            <div class="col-md-4 col-sm-6 col-xs-12">
+                                <a href="{% url 'blog:post_detail' related_post.slug %}"><p>{{related_post.title}}</p></a>
+                            </div>
 
-                    {% endfor %}
+                        {% endfor %}
                     {% endif %}
 
                 </div>
             </div>
             <!-- You May Also Like End -->
-
-
-            <!-- Post Comment Start -->
-            <div id="comment" class="comment">
-                <h3>Comment Your Thoughts</h3>
-
-                <div class="post-comments">
-                    <!--
-                  <ul>
-
-                   <li>
-                    <div class="thumb">
-                        <img src="images/blog/comment.png" alt="">
-                     </div>
-
-                     <div class="text">
-                        <div class="cover">
-                            <h4>Jhon Doe</h4>
-                            <span>April 17, 2017</span>
-                            <p>Cras eu molestie leo, non faucibus orci. Mauris aliquet leo dictum tincidunt laoreet. Nunc imperdiet accumsan efficitur.</p>
-                            <a href="#" class="reply">Reply</a>
-                        </div>
-                    </div>
-                </li>
-
-                  <li>
-                    <div class="thumb">
-                        <img src="{% static 'images/blog/comment.png' %}" alt="">
-                    </div>
-                    <div class="text">
-                        <div class="cover">
-                            <h4>Jhon Doe</h4>
-                            <span>April 17, 2017</span>
-                            <p>Cras eu molestie leo, non faucibus orci. Mauris aliquet leo dictum tincidunt laoreet. Nunc imperdiet accumsan efficitur.</p>
-                            <a href="#" class="reply">Reply</a>
-                        </div>
-                    </div>
-
-                        <ul>
-                         <li>
-                            <div class="thumb">
-                                <img src="images/blog/comment.png" alt="">
-                            </div>
-                            <div class="text">
-                                <div class="cover">
-                                    <h4>Jhon Doe</h4>
-                                    <span>April 17, 2017</span>
-                                    <p>Cras eu molestie leo, non faucibus orci. Mauris aliquet leo dictum tincidunt laoreet. Nunc imperdiet accumsan efficitur.</p>
-                                    <a href="#" class="reply">Reply</a>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="thumb">
-                                <img src="images/blog/comment.png" alt="">
-                            </div>
-                            <div class="text">
-                                <div class="cover">
-                                    <h4>Jhon Doe</h4>
-                                    <span>April 17, 2017</span>
-                                    <p>Cras eu molestie leo, non faucibus orci. Mauris aliquet leo dictum tincidunt laoreet. Nunc imperdiet accumsan efficitur.</p>
-                                    <a href="#" class="reply">Reply</a>
-                                </div>
-                            </div>
-                            <ul>
-
-                                <li>
-                                    <div class="thumb">
-                                        <img src="images/blog/comment.png" alt="">
-                                    </div>
-                                    <div class="text">
-                                        <div class="cover">
-                                            <h4>Jhon Doe</h4>
-                                            <span>April 17, 2017</span>
-                                            <p>Cras eu molestie leo, non faucibus orci. Mauris aliquet leo dictum tincidunt laoreet. Nunc imperdiet accumsan efficitur.</p>
-                                            <a href="#" class="reply">Reply</a>
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <li>
-                                    <div class="thumb">
-                                        <img src="images/blog/comment.png" alt="">
-                                    </div>
-                                    <div class="text">
-                                        <div class="cover">
-                                            <h4>Jhon Doe</h4>
-                                            <span>April 17, 2017</span>
-                                            <p>Cras eu molestie leo, non faucibus orci. Mauris aliquet leo dictum tincidunt laoreet. Nunc imperdiet accumsan efficitur.</p>
-                                            <a href="#" class="reply">Reply</a>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <div class="thumb">
-                        <img src="images/blog/comment.png" alt="">
-                    </div>
-                    <div class="text">
-                        <div class="cover">
-                            <h4>Jhon Doe</h4>
-                            <span>April 17, 2017</span>
-                            <p>Cras eu molestie leo, non faucibus orci. Mauris aliquet leo dictum tincidunt laoreet. Nunc imperdiet accumsan efficitur.</p>
-                            <a href="#" class="reply">Reply</a>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-            -->
-                </div>
-
-
-                <!-- Post Form Start -->
-                <div class="col-md-12">
-                    <div class="row">
-                        <form>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <input type="text" id="name" class="form-control" placeholder="Your Name">
-                                </div>
-                            </div>
-
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <input type="email" id="email" class="form-control" placeholder="Your Email">
-                                </div>
-                            </div>
-
-
-                            <div class="col-sm-12">
-                                <div class="textarea-message form-group">
-                                    <textarea id="message" class="textarea-message form-control"
-                                              placeholder="Your Message" rows="5"></textarea>
-                                </div>
-                            </div>
-
-
-                            <div class="text-center">
-                                <button type="submit" class="load-more-button">Send</button>
-                            </div>
-
-                        </form>
-                    </div>
-                </div>
-                BAKLAVALAR BENDEN!!!!!!!!!!!!!!!
-                <!-- Post Form End-->
-
-            </div>
-            <!-- Post Comment End -->
 
 
         </div>
@@ -244,4 +102,110 @@
 </div>
 
 
+{% endblock %}
+
+
+{% block initial_like %}
+<script>
+
+{% if voted == 1 %}
+
+    $(document).ready(function() {
+        $("#thumbs-up").addClass("liked");
+
+        document.getElementById('thumbs-up').style.color = "darkblue";
+
+
+    });
+{% elif voted == -1 %}
+
+    $(document).ready(function() {
+        $("#thumbs-down").addClass("disliked");
+
+        document.getElementById('thumbs-down').style.color = "darkred";
+
+    });
+
+{% endif %}
+</script>
+{% endblock %}
+
+
+{% block like_dislike %}
+<script>
+$(document).ready(function() {
+    $("#thumbs-up").click(function(){
+        let likes;
+        if($(this).hasClass("liked")){
+
+            $.post("{% url 'blog:post_detail' post.slug%}",{"like": 0, 'csrfmiddlewaretoken': '{{ csrf_token }}'});
+
+            $(this).removeClass("liked");
+
+            document.getElementById('thumbs-up').removeAttribute("style");
+
+            likes = parseInt(document.getElementById('likes').textContent);
+            likes--;
+            document.getElementById('likes').textContent = likes;
+
+        } else {
+            $(this).addClass("liked");
+            $.post("{% url 'blog:post_detail' post.slug%}",{"like": 1, 'csrfmiddlewaretoken': '{{ csrf_token }}'});
+
+            likes = parseInt(document.getElementById('likes').textContent);
+            likes++;
+            document.getElementById('likes').textContent = likes;
+
+            document.getElementById('thumbs-up').style.color = "darkblue";
+
+            if($("#thumbs-down").hasClass("disliked")){
+
+                document.getElementById('thumbs-down').removeAttribute("style");
+                $("#thumbs-down").removeClass("disliked");
+                likes++;
+                document.getElementById('likes').textContent = likes;
+            }
+
+        }
+    });
+
+	$("#thumbs-down").click(function(){
+        let likes;
+        if($(this).hasClass("disliked")){
+
+            $.post("{% url 'blog:post_detail' post.slug%}",{"like": 0, 'csrfmiddlewaretoken': '{{ csrf_token }}'
+            });
+
+            $(this).removeClass("disliked");
+
+            document.getElementById('thumbs-down').removeAttribute("style");
+
+            likes = parseInt(document.getElementById('likes').textContent);
+            likes++;
+            document.getElementById('likes').textContent = likes;
+
+        } else {
+            $(this).addClass("disliked");
+            $.post("{% url 'blog:post_detail' post.slug%}",{"like": -1, 'csrfmiddlewaretoken': '{{ csrf_token }}'
+            });
+
+            document.getElementById('thumbs-down').style.color = "darkred";
+
+            likes = parseInt(document.getElementById('likes').textContent);
+            likes--;
+            document.getElementById('likes').textContent = likes;
+
+            if($("#thumbs-up").hasClass("liked")){
+
+                document.getElementById('thumbs-up').removeAttribute("style");
+
+                $("#thumbs-up").removeClass("liked");
+                likes--;
+                document.getElementById('likes').textContent = likes;
+            }
+        }
+    });
+
+});
+</script>
 {% endblock %}

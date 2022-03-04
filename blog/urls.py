@@ -7,14 +7,16 @@ from . import views
 
 app_name = 'blog'
 urlpatterns = [
-    path('', views.index.as_view(), name='index'),
-    path('post/<slug:slug>/', views.post_detail.as_view(), name='post_detail'),
-    path('topic/<slug:slug>/', views.topic_detail.as_view(), name='topic_detail'),
-    path('author/<int:id>/', views.author_detail.as_view(), name='author_detail'),
-    path('new-post/', views.add_post.as_view(), name='add_post'),
-    path('new-topic/', views.add_topic.as_view(), name='add_topic'),
-    path('edit-post/<slug:slug>/', views.edit_post.as_view(), name='edit_post'),
-    path('newsletter-subscription/', views.newsletter_subscription.as_view(), name='newsletter_subscription'),
+    path('', views.IndexView.as_view(), name='index'),
+    path('post/<slug:slug>/', views.PostDetailView.as_view(), name='post_detail'),
+    path('topic/<slug:slug>/', views.TopicDetailView.as_view(), name='topic_detail'),
+    path('author/<int:id>/', views.AuthorDetailView.as_view(), name='author_detail'),
+    path('new-post/', views.AddPostView.as_view(), name='add_post'),
+    path('new-topic/', views.AddTopicView.as_view(), name='add_topic'),
+    path('edit-post/<slug:slug>/', views.EditPostView.as_view(), name='edit_post'),
+    path('newsletter-subscription/', views.SubscriptionView.as_view(), name='newsletter_subscription'),
+    path('all-topics/', views.AllTopicsView.as_view(), name='all_topics'),
+    path('about/', views.AboutView.as_view(), name='about'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,

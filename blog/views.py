@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.template.defaultfilters import slugify
 from django.utils import timezone
@@ -6,13 +7,15 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 
-from .forms import NewPostForm, NewTopicForm, EditPostForm
-from .models import Post, Topic, User, Subscriber
+from .forms import NewPostForm, NewTopicForm, EditPostForm, EditAboutPageForm
+from .models import Post, Topic, User, Subscriber, PUBLISHED, DRAFT, AboutPage
+
+from hitcount.views import HitCountMixin
+from hitcount.models import HitCount
 
 
-class index(View):
+class IndexView(View):
     def get(self, request):
-
         search_post = request.GET.get('search')
         if search_post:
             posts = Post.objects.filter(Q(title__icontains=search_post)
@@ -22,44 +25,59 @@ class index(View):
         else:
             sort_method = request.GET.get('sort')
 
-            if sort_method == 'newest':
-                posts = Post.objects.filter(status=1, active=True).order_by('-pub_date')
-            elif sort_method == 'oldest':
-                posts = Post.objects.filter(status=1, active=True).order_by('pub_date')
-            elif sort_method == 'author':
-                posts = Post.objects.filter(status=1, active=True).order_by('author')
-            elif sort_method == 'topic':
-                posts = Post.objects.filter(status=1, active=True).order_by('topic')
+            if sort_method:
+                posts = Post.objects.filter(status=PUBLISHED, active=True).order_by(sort_method)
             else:
-                posts = Post.objects.filter(status=1, active=True).order_by('-pub_date')
+                posts = Post.objects.filter(status=PUBLISHED, active=True).order_by('-pub_date')
 
         return render(request, 'blog/index.html', {'posts': posts})
 
 
-class post_detail(View):
+class PostDetailView(View, HitCountMixin):
     def get(self, request, slug):
-        post = get_object_or_404(Post, status=1, slug=slug, active=True)
-        return render(request, 'blog/post_detail.html', {'post': post})
+        post = get_object_or_404(Post, status=PUBLISHED, slug=slug, active=True)
+
+        hit_count = HitCount.objects.get_for_object(post)
+        hit_count_response = HitCountMixin.hit_count(request, hit_count)
+
+        token = request.secretballot_token
+        voted = 0
+        try:
+            voted = post.votes.get(token=token).vote
+        except ObjectDoesNotExist:
+            pass
+
+        return render(request, 'blog/post_detail.html', {'post': post, 'voted': voted})
+
+    def post(self, request, slug):
+        post = get_object_or_404(Post, status=PUBLISHED, slug=slug, active=True)
+        vote = request.POST.get('like')
+        token = request.secretballot_token
+        post.remove_vote(token)
+        post.add_vote(token, vote)
+
+        response = HttpResponse()
+        return response
 
 
-class topic_detail(View):
+class TopicDetailView(View):
     def get(self, request, slug):
         topic = get_object_or_404(Topic, slug=slug)
-        posts = Post.objects.filter(status=1, topic=topic, active=True).order_by('-pub_date')
+        posts = Post.objects.filter(status=PUBLISHED, topic=topic, active=True).order_by('-pub_date')
         return render(request, 'blog/topic_detail.html', {'posts': posts, 'topic': topic})
 
 
-class author_detail(View):
+class AuthorDetailView(View):
     def get(self, request, id):
         author = get_object_or_404(User, id=id)
         if request.user != author:
-            posts = Post.objects.filter(status=1, author=author, active=True).order_by('-pub_date')
+            posts = Post.objects.filter(status=PUBLISHED, author=author, active=True).order_by('-pub_date')
         else:
             posts = Post.objects.filter(author=author).order_by('-pub_date')
         return render(request, 'blog/author_detail.html', {'posts': posts, 'author': author})
 
 
-class add_post(LoginRequiredMixin, View):
+class AddPostView(LoginRequiredMixin, View):
     def get(self, request):
         form = NewPostForm()
         return render(request, 'blog/add_post.html', {'form': form})
@@ -69,7 +87,7 @@ class add_post(LoginRequiredMixin, View):
         if form.is_valid():
             post = form.save(commit=False)
 
-            if post.status == 1:
+            if post.status == PUBLISHED:
                 post.pub_date = timezone.now()
 
             post.slug = slugify(post.title)
@@ -81,7 +99,7 @@ class add_post(LoginRequiredMixin, View):
                 post.related_posts.add(selected_post)
 
             if post.related_posts.count() < 3:
-                rel_posts = Post.objects.filter(status=1, active=True, topic=post.topic).exclude(id=post.id).order_by(
+                rel_posts = Post.objects.filter(status=PUBLISHED, active=True, topic=post.topic).exclude(id=post.id).order_by(
                     '-pub_date')
 
                 for e in rel_posts:
@@ -91,7 +109,7 @@ class add_post(LoginRequiredMixin, View):
                             break
 
             if post.related_posts.count() < 3:
-                rel_posts = Post.objects.filter(status=1, active=True).exclude(id=post.id, topic=post.topic).order_by(
+                rel_posts = Post.objects.filter(status=PUBLISHED, active=True).exclude(id=post.id, topic=post.topic).order_by(
                     '-pub_date')
 
                 for e in rel_posts:
@@ -102,7 +120,7 @@ class add_post(LoginRequiredMixin, View):
 
             post.save()
 
-            if post.status == 1:
+            if post.status == PUBLISHED:
                 return redirect('blog:post_detail', post.slug)
             else:
                 return redirect('blog:index')
@@ -110,7 +128,7 @@ class add_post(LoginRequiredMixin, View):
             return redirect('blog:index')
 
 
-class add_topic(LoginRequiredMixin, View):
+class AddTopicView(LoginRequiredMixin, View):
     def get(self, request):
         form = NewTopicForm()
         return render(request, 'blog/add_topic.html', {'form': form})
@@ -126,7 +144,7 @@ class add_topic(LoginRequiredMixin, View):
             return redirect('blog:topic_detail', topic.slug)
 
 
-class edit_post(LoginRequiredMixin, View):
+class EditPostView(LoginRequiredMixin, View):
     def get(self, request, slug):
         post = get_object_or_404(Post, slug=slug, author=request.user)
         form = EditPostForm(instance=post)
@@ -135,11 +153,11 @@ class edit_post(LoginRequiredMixin, View):
     def post(self, request, slug):
         post = get_object_or_404(Post, slug=slug, author=request.user)
         old_status = post.status
-        form = EditPostForm(request.POST, instance=post)
+        form = EditPostForm(request.POST, request.FILES, instance=post)
 
         if form.is_valid():
-            if old_status == 0:
-                if post.status == 1:
+            if old_status == DRAFT:
+                if post.status == PUBLISHED:
                     post.pub_date = timezone.now()
 
             post.save()
@@ -148,7 +166,7 @@ class edit_post(LoginRequiredMixin, View):
                 post.related_posts.add(selected_post)
 
             if post.related_posts.count() < 3:
-                rel_posts = Post.objects.filter(status=1, active=True, topic=post.topic).order_by('-pub_date')
+                rel_posts = Post.objects.filter(status=PUBLISHED, active=True, topic=post.topic).order_by('-pub_date')
                 posts_needed = 3 - post.related_posts.count()
 
                 if posts_needed + 1 > rel_posts.count():
@@ -159,7 +177,7 @@ class edit_post(LoginRequiredMixin, View):
 
             post.save()
 
-            if post.active and post.status == 1:
+            if post.active and post.status == PUBLISHED:
                 return redirect('blog:post_detail', post.slug)
             else:
                 return redirect('blog:index')
@@ -167,12 +185,37 @@ class edit_post(LoginRequiredMixin, View):
         return redirect('blog:index')
 
 
-class newsletter_subscription(View):
+class SubscriptionView(View):
     def post(self, request):
         new_subscriber = Subscriber()
         new_subscriber.email = request.POST['mail']
+
         try:
             Subscriber.objects.get(email=new_subscriber.email)
         except ObjectDoesNotExist:
             new_subscriber.save()
+
         return redirect('blog:index')
+
+
+class AllTopicsView(View):
+    def get(self, request):
+        topics = Topic.objects.all()
+        return render(request, 'blog/all_topics.html', {'topics': topics})
+
+
+class AboutView(View):
+    def get(self, request):
+        about = get_object_or_404(AboutPage, pk=1)
+        form = EditAboutPageForm(instance=about)
+        return render(request, 'blog/about.html', {'about': about.content, 'form': form})
+
+    def post(self, request):
+        about = get_object_or_404(AboutPage, pk=1)
+        form = EditAboutPageForm(request.POST, instance=about)
+
+        if form.is_valid():
+            about = form.save(commit=False)
+            about.save()
+
+        return redirect('blog:about')

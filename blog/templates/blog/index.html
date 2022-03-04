@@ -1,5 +1,6 @@
 {% extends 'blog/base.html' %}
 {% load static %}
+{% load hitcount_tags %}
 
 
 {% block content %}
@@ -23,8 +24,8 @@
                     <select class="form-control form-control-sm" name="sort" onchange="this.form.submit()">
 
                         <option disabled="disabled" selected="selected">Sorting method</option>
-                        <option value=newest>Date published (newest)</option>
-                        <option value=oldest>Date published (oldest)</option>
+                        <option value=-pub_date>Date published (newest)</option>
+                        <option value=pub_date>Date published (oldest)</option>
                         <option value=author>Author name (a to z)</option>
                         <option value=topic>Topic name (a to z)</option>
 
@@ -36,30 +37,34 @@
 
         <br>
         {% if posts %}
-        {% for post in posts %}
-        <!-- Blog Post Start -->
-        <div class="col-md-12 blog-post">
+            {% for post in posts %}
+                <!-- Blog Post Start -->
+                <div class="col-md-12 blog-post">
 
-            {% if post.post_picture %}
+                    {% if post.post_picture %}
 
-                <img src="{{ post.post_picture.url}}" alt="" style="">
+                        <img src="{{ post.post_picture.url}}" alt="" height="350">
 
-            {% endif %}
+                    {% endif %}
 
-            <div class="post-title">
-                <a href="{% url 'blog:post_detail' post.slug %}"><h2>{{post.title}}</h2></a>
-            </div>
-            <div class="post-info">
-                        <span>{{post.pub_date | date}} / In <a href="{% url 'blog:topic_detail' post.topic.slug %}">{{post.topic.name}}</a>
-                            / Author <a href="{% url 'blog:author_detail' post.author.id %}">{{post.author.get_full_name}}</a>
-                        </span>
-            </div>
-            <p>{{post.content | safe | truncatewords_html:96}}</p>
-            <a href="{% url 'blog:post_detail' post.slug %}"
-               class="button button-style button-anim fa fa-long-arrow-right"><span>Read More</span></a>
-        </div>
-        <!-- Blog Post End -->
-        {% endfor %}
+                    <div class="post-title">
+                        <a href="{% url 'blog:post_detail' post.slug %}"><h2>{{post.title}}</h2></a>
+                    </div>
+
+                    <div class="post-info">
+                                <span>{{post.pub_date | date}} / In <a href="{% url 'blog:topic_detail' post.topic.slug %}">{{post.topic.name}}</a>
+                                    / Author <a href="{% url 'blog:author_detail' post.author.id %}">{{post.author.get_full_name}}</a>
+                                    / Views: {% get_hit_count for post %}
+                                    / Likes: {{post.vote_total}}
+                                </span>
+                    </div>
+
+                    <p>{{post.content | safe | truncatewords_html:96}}</p>
+                    <a href="{% url 'blog:post_detail' post.slug %}"
+                       class="button button-style button-anim fa fa-long-arrow-right"><span>Read More</span></a>
+                </div>
+                <!-- Blog Post End -->
+            {% endfor %}
         {% endif %}
 
 

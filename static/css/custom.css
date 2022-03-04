@@ -1,0 +1,34 @@
+#navbar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+#thumbs-up {
+  font-size: 36px;
+  cursor: pointer;
+  user-select: none;
+}
+
+#thumbs-up:hover {
+  color: darkblue;
+}
+
+#thumbs-down {
+  font-size: 36px;
+  cursor: pointer;
+  user-select: none;
+}
+
+#thumbs-down:hover {
+  color: darkred;
+}
+
+var {
+  font-style: normal;
+}
